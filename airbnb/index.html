@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airbnb Template</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .navbar.shrink {
+            padding: 8px 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff385c;
+            transition: font-size 0.3s ease;
+        }
+        .navbar.shrink .logo {
+            font-size: 20px;
+        }
+        .navbar .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .navbar .nav-links a {
+            text-decoration: none;
+            color: #222;
+            font-weight: 500;
+            position: relative;
+            transition: font-size 0.3s ease;
+        }
+        .navbar.shrink .nav-links a {
+            font-size: 14px;
+        }
+        .navbar .nav-links a.new::after {
+            content: "NEW";
+            position: absolute;
+            top: -10px;
+            right: -20px;
+            font-size: 10px;
+            color: #ff385c;
+        }
+        .navbar .right-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .navbar .right-section a {
+            text-decoration: none;
+            color: #222;
+            font-weight: 500;
+            transition: font-size 0.3s ease;
+        }
+        .navbar.shrink .right-section a {
+            font-size: 14px;
+        }
+        .navbar .right-section .icon {
+            width: 24px;
+            height: 24px;
+            background-color: #ddd;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        .navbar.shrink .right-section .icon {
+            width: 20px;
+            height: 20px;
+        }
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .search-bar .search-box {
+            display: flex;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar .search-box div {
+            padding: 15px 20px;
+            border-right: 1px solid #ddd;
+            color: #666;
+            transition: background-color 0.3s ease;
+        }
+        .search-bar .search-box div.where:hover,
+        .search-bar .search-box div.check-in:hover,
+        .search-bar .search-box div.check-out:hover,
+        .search-bar .search-box div.who:hover {
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+        .search-bar .search-box div:last-child {
+            border-right: none;
+        }
+        .search-bar .search-box .search-icon {
+            background-color: #ff385c;
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .search-bar .search-box .search-icon:hover {
+            background-color: #e03150;
+            cursor: pointer;
+        }
+        .main-section {
+            padding: 20px 30px;
+        }
+        .main-section h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .cards-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+        .card {
+            min-width: 250px;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .card .favorite {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .card .favorite .heart {
+            color: #ff385c;
+        }
+        .card .info {
+            padding: 15px;
+        }
+        .card .info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        .card .info .price {
+            font-weight: bold;
+        }
+        .card .info .rating {
+            color: #666;
+        }
+        .section-title {
+            font-size: 24px-girl;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cards-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding-bottom: 20px;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: #888 #f1f1f1;
+        }
+
+        .cards-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .cards-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .cards-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .cards-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .card {
+            min-width: 280px;
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 15px;
+        }
+
+        .card-content h3 {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .card-content p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: #f39c12;
+        }
+
+        .favorite {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .favorite:hover {
+            color: #e74c3c;
+        }
+
+        .tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #3498db;
+            color: #fff;
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+        /* code for third section */
+        .tag {
+    position: absolute;
+    top: 10px;
+    left: auto;
+    right: 10px; /* Move to the right like in the image */
+    background: rgba(255, 255, 255, 0.8); /* White background with slight transparency */
+    color: #333;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 12px;
+    text-transform: none; /* Remove uppercase to match the image */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.tag::after {
+    content: "♥"; /* Add heart icon directly in the tag */
+    color: #ff385c;
+    font-size: 12px;
+}
+
+.favorite {
+    display: none; /* Hide the separate heart icon since it's now part of the tag */
+}
+
+.tag {
+    position: absolute;
+    top: 10px;
+    left: auto;
+    right: 10px; /* Move to the right like in the image */
+    background: rgba(255, 255, 255, 0.8); /* White background with slight transparency */
+    color: #333;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 12px;
+    text-transform: none; /* Remove uppercase to match the image */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.tag::after {
+    content: "♥"; /* Add heart icon directly in the tag */
+    color: #ff385c;
+    font-size: 12px;
+}
+
+.favorite {
+    display: none; 
+}
+.inspiration-section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #ffffff, #e6f0fa);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .inspiration-section h2 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .category-column {
+            flex: 1;
+            min-width: 200px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category-column:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-column h3 {
+            font-size: 18px;
+            color: #34495e;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        .category-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .category-column li {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #7f8c8d;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .category-column li:hover {
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .support-section {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            gap: 20px;
+        }
+
+        .support-column {
+            flex: 1;
+            min-width: 200px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .support-column:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .support-column h3 {
+            font-size: 18px;
+            color: #34495e;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        .support-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .support-column li {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #7f8c8d;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .support-column li:hover {
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+            margin: 0 5px;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="navbar" id="navbar">
+        <div class="logo">airbnb</div>
+        <div class="nav-links">
+            <a href="#" class="active">Homes</a>
+            <a href="#" class="new">Experiences</a>
+            <a href="#" class="new">Services</a>
+        </div>
+        <div class="right-section">
+            <a href="#">Become a host</a>
+            <div class="icon"></div>
+            <div class="icon"></div>
+        </div>
+    </div>
+
+    <div class="search-bar">
+        <div class="search-box">
+            <div class="where">Where<br>Search destinations</div>
+            <div class="check-in">Check in<br>Add dates</div>
+            <div class="check-out">Check out<br>Add dates</div>
+            <div class="who">Who<br>Add guests</div>
+            <div class="search-icon">🔍</div>
+        </div>
+    </div>
+
+    <div class="main-section">
+        <h2>Popular homes in Gurgaon District →</h2>
+        <div class="cards-container">
+            <div class="card">
+                <img src="img/bedroom1.jpg" alt="Bedroom 1">
+                <div class="favorite">Guest favourite <span class="heart">♥</span></div>
+                <div class="info">
+                    <p class="price">Flat in Gurugram</p>
+                    <p>₹7,710 for 2 nights • 4.99</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="img/living room.jpg" alt="Living Room">
+                <div class="favorite">Guest favourite <span class="heart">♥</span></div>
+                <div class="info">
+                    <p class="price">Flat in Gurugram</p>
+                    <p>₹5,829 for 2 nights • 4.91</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="img/bedroom2.jpg" alt="Bedroom 2">
+                <div class="favorite">Guest favourite <span class="heart">♥</span></div>
+                <div class="info">
+                    <p class="price">Flat in Gurugram</p>
+                    <p>₹2,458 for 2 nights • 4.83</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="img/bedroom3.jpg" alt="Bedroom 3">
+                <div class="favorite">Guest favourite <span class="heart">♥</span></div>
+                <div class="info">
+                    <p class="price">Flat in Gurugram</p>
+                    <p>₹2,724 for 2 nights • 4.94</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="img/bedroom4.jpg" alt="Bedroom 4">
+                <div class="favorite">Guest favourite <span class="heart">♥</span></div>
+                <div class="info">
+                    <p class="price">Flat in Gurugram</p>
+                    <p>₹5,500 for 2 nights • 4.82</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="img/bedroom5.jpg" alt="Bedroom 5">
+                <div class="favorite">Guest favourite <span class="heart">♥</span></div>
+                <div class="info">
+                    <p class="price">Flat in Gurugram</p>
+                    <p>₹5,563 for 2 nights • 5.0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-title">
+    <h2>Available in Gautam Buddha Nagar this weekend →</h2>
+    <div class="cards-container">
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/flat-in-GN.jpg" alt="Flat Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Flat in Greater Noida</h3>
+                <p>₹3,605 for 2 nights</p>
+                <div class="rating">⭐ 4.86</div>
+            </div>
+        </div>
+        <div class="card">
+            <img src="img/hotel-image.jpg" alt="Hotel Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Hotel in Greater Noida</h3>
+                <p>₹4,291 for 2 nights</p>
+                <div class="rating">⭐ 4.83</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/flatimage2.jpg" alt="Flat Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Flat in Greater Noida</h3>
+                <p>₹4,519 for 2 nights</p>
+                <div class="rating">⭐ 5.0</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/villa-gn.jpg" alt="Villa Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Villa in Greater Noida</h3>
+                <p>₹2,334 for 2 nights</p>
+                <div class="rating">⭐ 4.88</div>
+            </div>
+        </div>
+        <div class="card">
+            <img src="img/hotel-image.jpg" alt="Flat Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Flat in Noida</h3>
+                <p>₹8,185 for 2 nights</p>
+                <div class="rating">⭐ 5.0</div>
+            </div>
+        </div>
+        <div class="card">
+            <img src="img/flat-in-noida.jpg" alt="Hotel Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Hotel in Greater Noida</h3>
+                <p>₹4,291 for 2 nights</p>
+                <div class="rating">⭐ 4.86</div>
+            </div>
+        </div>
+    </div>
+    </div>
+<div class="section-title">
+    <h2>Stay in Dehradun →</h2>
+    <div class="cards-container">
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/tiny-home.jpg" alt="Tiny Home Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Tiny home in Dehradun</h3>
+                <p>₹4,053 for 2 nights</p>
+                <div class="rating">⭐ 4.95</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/room.jph.jpg" alt="Room Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Room in Dehradun</h3>
+                <p>₹2,739 for 2 nights</p>
+                <div class="rating">⭐ 4.97</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/place-image.jpg" alt="Place Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Place to stay in Dehradun</h3>
+                <p>₹2,965 for 2 nights</p>
+                <div class="rating">⭐ 4.84</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/home.jpg" alt="Home Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Home in Dehradun</h3>
+                <p>₹4,314 for 2 nights</p>
+                <div class="rating">⭐ 4.8</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/room2.jpg" alt="Room Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Room in Dehradun</h3>
+                <p>₹1,438 for 2 nights</p>
+                <div class="rating">⭐ 4.88</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/apartment.jpg" alt="Apartment Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Apartment in Dehradun</h3>
+                <p>₹4,108 for 2 nights</p>
+                <div class="rating">⭐ 5.0</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section-title">
+    <h2>Available in South Delhi this weekend →</h2>
+    <div class="cards-container">
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/tiny-home.jpg" alt="Tiny Home Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Room in Saket</h3>
+                <p>₹4,053 for 2 nights</p>
+                <div class="rating">⭐ 4.95</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/room.jph.jpg" alt="Room Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Flat in Malviya Nagar</h3>
+                <p>₹2,739 for 2 nights</p>
+                <div class="rating">⭐ 4.93</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/place-image.jpg" alt="Place Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>flat in greater kailash</h3>
+                <p>₹2,965 for 2 nights</p>
+                <div class="rating">⭐ 4.94</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/home.jpg" alt="Home Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>flat in greater kailash</h3>
+                <p>₹4,314 for 2 nights</p>
+                <div class="rating">⭐ 5.0</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/room2.jpg" alt="Room Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>left in hauz khas</h3>
+                <p>₹1,438 for 2 nights</p>
+                <div class="rating">⭐ 4.79</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/apartment.jpg" alt="Apartment Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Room in Greater kailash</h3>
+                <p>₹4,108 for 2 nights</p>
+                <div class="rating">⭐4.79</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section-title">
+    <h2>Stay in Dehradun →</h2>
+    <div class="cards-container">
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/tiny-home.jpg" alt="Tiny Home Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Tiny home in Dehradun</h3>
+                <p>₹4,053 for 2 nights</p>
+                <div class="rating">⭐ 4.95</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/room.jph.jpg" alt="Room Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Room in Dehradun</h3>
+                <p>₹2,739 for 2 nights</p>
+                <div class="rating">⭐ 4.97</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/place-image.jpg" alt="Place Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Place to stay in Dehradun</h3>
+                <p>₹2,965 for 2 nights</p>
+                <div class="rating">⭐ 4.84</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/home.jpg" alt="Home Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Home in Dehradun</h3>
+                <p>₹4,314 for 2 nights</p>
+                <div class="rating">⭐ 4.8</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/room2.jpg" alt="Room Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Room in Dehradun</h3>
+                <p>₹1,438 for 2 nights</p>
+                <div class="rating">⭐ 4.88</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/apartment.jpg" alt="Apartment Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Apartment in Dehradun</h3>
+                <p>₹4,108 for 2 nights</p>
+                <div class="rating">⭐ 5.0</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section-title">
+    <h2>Available in South Delhi this weekend →</h2>
+    <div class="cards-container">
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/tiny-home.jpg" alt="Tiny Home Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Room in Saket</h3>
+                <p>₹4,053 for 2 nights</p>
+                <div class="rating">⭐ 4.95</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/room.jph.jpg" alt="Room Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Flat in Malviya Nagar</h3>
+                <p>₹2,739 for 2 nights</p>
+                <div class="rating">⭐ 4.93</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/place-image.jpg" alt="Place Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>flat in greater kailash</h3>
+                <p>₹2,965 for 2 nights</p>
+                <div class="rating">⭐ 4.94</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/home.jpg" alt="Home Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>flat in greater kailash</h3>
+                <p>₹4,314 for 2 nights</p>
+                <div class="rating">⭐ 5.0</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/room2.jpg" alt="Room Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>left in hauz khas</h3>
+                <p>₹1,438 for 2 nights</p>
+                <div class="rating">⭐ 4.79</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/apartment.jpg" alt="Apartment Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Room in Greater kailash</h3>
+                <p>₹4,108 for 2 nights</p>
+                <div class="rating">⭐4.79</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section-title">
+    <h2>Stay in Dehradun →</h2>
+    <div class="cards-container">
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/tiny-home.jpg" alt="Tiny Home Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Tiny home in Dehradun</h3>
+                <p>₹4,053 for 2 nights</p>
+                <div class="rating">⭐ 4.95</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/room.jph.jpg" alt="Room Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Room in Dehradun</h3>
+                <p>₹2,739 for 2 nights</p>
+                <div class="rating">⭐ 4.97</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/place-image.jpg" alt="Place Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Place to stay in Dehradun</h3>
+                <p>₹2,965 for 2 nights</p>
+                <div class="rating">⭐ 4.84</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/home.jpg" alt="Home Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Home in Dehradun</h3>
+                <p>₹4,314 for 2 nights</p>
+                <div class="rating">⭐ 4.8</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/room2.jpg" alt="Room Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Room in Dehradun</h3>
+                <p>₹1,438 for 2 nights</p>
+                <div class="rating">⭐ 4.88</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/apartment.jpg" alt="Apartment Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Apartment in Dehradun</h3>
+                <p>₹4,108 for 2 nights</p>
+                <div class="rating">⭐ 5.0</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section-title">
+    <h2>Available in South Delhi this weekend →</h2>
+    <div class="cards-container">
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/tiny-home.jpg" alt="Tiny Home Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Room in Saket</h3>
+                <p>₹4,053 for 2 nights</p>
+                <div class="rating">⭐ 4.95</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/room.jph.jpg" alt="Room Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Flat in Malviya Nagar</h3>
+                <p>₹2,739 for 2 nights</p>
+                <div class="rating">⭐ 4.93</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/place-image.jpg" alt="Place Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>flat in greater kailash</h3>
+                <p>₹2,965 for 2 nights</p>
+                <div class="rating">⭐ 4.94</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/home.jpg" alt="Home Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>flat in greater kailash</h3>
+                <p>₹4,314 for 2 nights</p>
+                <div class="rating">⭐ 5.0</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/room2.jpg" alt="Room Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>left in hauz khas</h3>
+                <p>₹1,438 for 2 nights</p>
+                <div class="rating">⭐ 4.79</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/apartment.jpg" alt="Apartment Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Room in Greater kailash</h3>
+                <p>₹4,108 for 2 nights</p>
+                <div class="rating">⭐4.79</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section-title">
+    <h2>Available in South Delhi this weekend →</h2>
+    <div class="cards-container">
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/tiny-home.jpg" alt="Tiny Home Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Room in Saket</h3>
+                <p>₹4,053 for 2 nights</p>
+                <div class="rating">⭐ 4.95</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/room.jph.jpg" alt="Room Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Flat in Malviya Nagar</h3>
+                <p>₹2,739 for 2 nights</p>
+                <div class="rating">⭐ 4.93</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/place-image.jpg" alt="Place Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>flat in greater kailash</h3>
+                <p>₹2,965 for 2 nights</p>
+                <div class="rating">⭐ 4.94</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/home.jpg" alt="Home Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>flat in greater kailash</h3>
+                <p>₹4,314 for 2 nights</p>
+                <div class="rating">⭐ 5.0</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/room2.jpg" alt="Room Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>left in hauz khas</h3>
+                <p>₹1,438 for 2 nights</p>
+                <div class="rating">⭐ 4.79</div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="tag">Guest favourite</div>
+            <img src="img/apartment.jpg" alt="Apartment Image">
+            <span class="favorite">❤️</span>
+            <div class="card-content">
+                <h3>Room in Greater kailash</h3>
+                <p>₹4,108 for 2 nights</p>
+                <div class="rating">⭐4.79</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="inspiration-section">
+        <h2>Inspiration for future getaways</h2>
+        <div class="categories">
+            <div class="category-column">
+                <h3>UNIQUE STAYS</h3>
+                <ul>
+                    <li>Yurt Rentals</li>
+                    <li>Farm Houses</li>
+                    <li>Cottage Rentals</li>
+                    <li>Holiday Cottages</li>
+                </ul>
+            </div>
+            <div class="category-column">
+                <h3>YURT RENTALS</h3>
+                <ul>
+                    <li>United States</li>
+                    <li>United Kingdom</li>
+                </ul>
+                <h3>CASTLE RENTALS</h3>
+                <ul>
+                    <li>Cabin Rentals</li>
+                    <li>Australia</li>
+                    <li>Mansion Rentals</li>
+                </ul>
+            </div>
+            <div class="category-column">
+                <h3>HOUSEBOATS</h3>
+                <ul>
+                    <li>Luxury Cabins</li>
+                    <li>Villa Rentals</li>
+                </ul>
+                <h3>HOLIDAY CARAVANS</h3>
+                <ul>
+                    <li>Luxury Cabins</li>
+                    <li>Holiday Bungalows</li>
+                </ul>
+            </div>
+            <div class="category-column">
+                <h3>PRIVATE ISLAND RENTALS</h3>
+                <ul>
+                    <li>Holiday Chalets</li>
+                    <li>United Kingdom</li>
+                    <li>Show more</li>
+                </ul>
+            </div>
+        </div>
+        <div class="support-section">
+            <div class="support-column">
+                <h3>SUPPORT</h3>
+                <ul>
+                    <li>Help Centre</li>
+                    <li>AirCover</li>
+                    <li>Anti-discrimination</li>
+                    <li>Disability support</li>
+                    <li>Cancellation options</li>
+                    <li>Report a neighbourhood concern</li>
+                </ul>
+            </div>
+            <div class="support-column">
+                <h3>HOSTING</h3>
+                <ul>
+                    <li>Airbnb your home</li>
+                    <li>AirCover for Hosts</li>
+                    <li>Hosting resources</li>
+                    <li>Community forum</li>
+                    <li>Hosting responsibly</li>
+                    <li>Join a free hosting class</li>
+                    <li>Find a co-host</li>
+                </ul>
+            </div>
+            <div class="support-column">
+                <h3>AIRBNB</h3>
+                <ul>
+                    <li>2025 Summer Release</li>
+                    <li>Newsroom</li>
+                    <li>New features</li>
+                    <li>Careers</li>
+                    <li>Investors</li>
+                    <li>Airbnb.org emergency stays</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer">
+            <p>© 2025 Airbnb, Inc. • <a href="#">Privacy</a> • <a href="#">Terms</a> • <a href="#">Sitemap</a> • <a href="#">Company details</a></p>
+        </div>
+    </div>
+    <script>
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shrink');
+            } else {
+                navbar.classList.remove('shrink');
+            }
+        });
+    </script>
+
+</body>
+</html>
